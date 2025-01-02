@@ -1,7 +1,7 @@
 import { Home, BadgePlus } from "lucide-react"
 
 import { Link } from "react-router"
-import Login from "../components/Login"
+import Login from "../components/AuthModel"
 function Footer() {
   return (
     <>
