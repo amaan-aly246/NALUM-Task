@@ -1,11 +1,13 @@
+import { v4 as uuid } from "uuid"
 import mongoose, { Document, Schema } from "mongoose"
 
 export interface IUser extends Document {
   name: string
-  age: number
+  password: string
+  // age: number
   //   profileIconUrl?: string
   //   isVerified: boolean
-  //   collegeMail: string
+  mail: string
   //   personalMail?: string
   //   branchInfo: {
   //     degree: string
@@ -29,11 +31,12 @@ export interface IUser extends Document {
 }
 
 const userSchema = new Schema<IUser>({
-  name: { type: String, required: true },
-  age: { type: Number, required: true },
+  name: { type: String, default: () => uuid() },
+  password: { type: String, required: true },
+  // age: { type: Number, required: true },
   //   profileIconUrl: { type: String },
   //   isVerified: { type: Boolean, default: false },
-  //   collegeMail: { type: String, required: true, unique: true },
+  mail: { type: String, required: true, unique: true },
   //   personalMail: { type: String },
   //   branchInfo: {
   //     degree: { type: String, required: true },
@@ -56,6 +59,6 @@ const userSchema = new Schema<IUser>({
   //   posts: { type: [String], required: true },
 })
 
-const UserModel = mongoose.model<IUser>("UserModel", userSchema)
+const UserModel = mongoose.model<IUser>("User", userSchema)
 
 export default UserModel

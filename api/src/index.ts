@@ -3,7 +3,7 @@ import { startStandaloneServer } from "@apollo/server/standalone"
 import dotenv from "dotenv"
 import { connectDb } from "./config/connectDb.ts"
 import { schema } from "./graphql/typeDefs.ts"
-import { getAllUsers } from "./graphql/resolvers.ts"
+import { getAllUsers, createUser, loginUser } from "./graphql/resolvers.ts"
 dotenv.config()
 const port = Number(process.env.PORT || 8000)
 const connectionURL = String(process.env.DATABASE_URL)
@@ -11,6 +11,10 @@ const connectionURL = String(process.env.DATABASE_URL)
 const resolvers = {
   Query: {
     Users: getAllUsers,
+  },
+  Mutation: {
+    createUser,
+    loginUser,
   },
 }
 
