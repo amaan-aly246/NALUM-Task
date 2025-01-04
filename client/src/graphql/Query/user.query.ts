@@ -9,4 +9,3 @@ export const GET_USERS = gql`
     }
   }
 `
-// export const LOGIN_USER = gql``

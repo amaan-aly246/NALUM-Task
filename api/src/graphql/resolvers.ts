@@ -12,9 +12,9 @@ export const getAllUsers = async (): Promise<IUser[]> => {
 
 export const createUser = async (
   _: any,
-  { mail, password, name }: { mail: string; password: string; name: string }
+  { email, password, name }: { email: string; password: string; name: string }
 ): Promise<AuthResponse> => {
-  const isUserExit: null | IUser = await UserModel.findOne({ mail })
+  const isUserExit: null | IUser = await UserModel.findOne({ email })
   // check if user is already exits in the db or not.
   if (isUserExit) {
     return {
@@ -26,7 +26,7 @@ export const createUser = async (
   const hashedPassword = await hash(password, SALT_ROUND)
   await UserModel.create({
     password: hashedPassword,
-    mail,
+    email,
     name,
   })
   return {
@@ -37,10 +37,10 @@ export const createUser = async (
 
 export const loginUser = async (
   _: any,
-  { mail, password }: { mail: string; password: string }
+  { email, password }: { email: string; password: string }
 ): Promise<AuthResponse> => {
   try {
-    const user: null | IUser = await UserModel.findOne({ mail })
+    const user: null | IUser = await UserModel.findOne({ email })
     // user does not exits
     if (!user) {
       return {
@@ -61,18 +61,18 @@ export const loginUser = async (
 
     // generate jwt token
     const accessToken = jwt.sign(
-      { mail: user.mail },
+      { email: user.email },
       process.env.ACCESS_TOKEN_SECRET!,
       { expiresIn: "30s" }
     )
     const refreshToken = jwt.sign(
-      { mail: user.mail },
+      { email: user.email },
       process.env.REFRESH_TOKEN_SECRET!,
       { expiresIn: "30s" }
     )
     
     // update the refresh token
-    await UserModel.findOneAndUpdate({mail}, {refreshToken})
+    await UserModel.findOneAndUpdate({email}, {refreshToken})
     return {
       success : true,
       message : "logged in successfully",

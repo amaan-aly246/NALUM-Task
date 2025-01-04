@@ -15,7 +15,8 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
-import { CREATE_USER } from "@/graphql/Mutation/user.mutation"
+import { CREATE_USER, LOGIN_USER } from "@/graphql/Mutation/user.mutation"
+import { AuthResponse } from "@/types/types"
 function AuthModal() {
   const [open, setOpen] = useState<boolean>(false)
   const [mode, setMode] = useState<"signup" | "login">("signup")
@@ -23,29 +24,35 @@ function AuthModal() {
 
   const [signupDetails, setSignupDetails] = useState({
     name: "",
-    mail: "",
+    email: "",
     password: "",
   })
 
   const [loginDetails, setLoginDetails] = useState({
-    mail: "",
+    email: "",
     password: "",
   })
 
-  const [createUserFunc, { loading }] = useMutation(CREATE_USER)
+  const [createUserFunc, { loading: CreateUserLoading }] =
+    useMutation(CREATE_USER)
 
-  const handleSignup: ReactEventHandler = async () => {
+  const handleSignup: ReactEventHandler = async (): Promise<void> => {
     if (!validateSignup({ signupDetails, setErrorMsg, setOpen })) return
-
     try {
       setErrorMsg(null)
-      await createUserFunc({
-        variables: {
-          name: signupDetails.name,
-          mail: signupDetails.mail,
-          password: signupDetails.password,
-        },
-      })
+      const response: AuthResponse = (
+        await createUserFunc({
+          variables: {
+            name: signupDetails.name,
+            email: signupDetails.email,
+            password: signupDetails.password,
+          },
+        })
+      ).data.createUser
+      if (!response.success) {
+        setErrorMsg(response.message)
+        return
+      }
       setOpen(false)
     } catch (error: any) {
       console.error(error)
@@ -53,12 +60,24 @@ function AuthModal() {
     }
   }
 
-  const handleLogin: ReactEventHandler = async () => {
+  const [loginUserFunc, { loading: loginLoading }] = useMutation(LOGIN_USER)
+  const handleLogin: ReactEventHandler = async (): Promise<void> => {
     if (!validateLogin({ loginDetails, setErrorMsg, setOpen })) return
-
     try {
       setErrorMsg(null)
-      // Implement login logic here
+      const response: AuthResponse = (
+        await loginUserFunc({
+          variables: {
+            email: loginDetails.email,
+            password: loginDetails.password,
+          },
+        })
+      ).data.loginUser
+      console.log(response)
+      if (!response.success) {
+        setErrorMsg(response.message)
+        return
+      }
       setOpen(false)
     } catch (error: any) {
       console.error(error)
@@ -89,12 +108,12 @@ function AuthModal() {
                 <Input
                   type="text"
                   placeholder="Name"
-                  onChange={(e) =>
+                  onChange={(e) => {
                     setSignupDetails((prevDetails) => ({
                       ...prevDetails,
                       name: e.target.value,
                     }))
-                  }
+                  }}
                 />
               </div>
             </>
@@ -106,12 +125,16 @@ function AuthModal() {
             <Input
               type="email"
               placeholder="Email"
-              onChange={(e) =>
+              onChange={(e) => {
                 setLoginDetails((prevDetails) => ({
                   ...prevDetails,
                   email: e.target.value,
                 }))
-              }
+                setSignupDetails((prevDetails) => ({
+                  ...prevDetails,
+                  email: e.target.value,
+                }))
+              }}
             />
           </div>
           <div className="flex gap-5 justify-between mb-4">
@@ -119,12 +142,16 @@ function AuthModal() {
             <Input
               placeholder="Password"
               type="password"
-              onChange={(e) =>
+              onChange={(e) => {
                 setLoginDetails((prevDetails) => ({
                   ...prevDetails,
                   password: e.target.value,
                 }))
-              }
+                setSignupDetails((prevDetails) => ({
+                  ...prevDetails,
+                  password: e.target.value,
+                }))
+              }}
             />
           </div>
         </div>
@@ -133,17 +160,18 @@ function AuthModal() {
           <AlertDialogCancel onClick={() => setOpen(false)}>
             Cancel
           </AlertDialogCancel>
-          <AlertDialogAction
-            onClick={mode === "signup" ? handleSignup : handleLogin}
-            disabled={loading}>
-            {loading
-              ? mode === "signup"
-                ? "Signing Up..."
-                : "Logging In..."
-              : mode === "signup"
-              ? "Sign Up"
-              : "Log In"}
-          </AlertDialogAction>
+          {mode == "signup" ? (
+            <AlertDialogAction
+              onClick={handleSignup}
+              disabled={CreateUserLoading}>
+              {CreateUserLoading ? "Signing Up..." : "Sign Up"}
+            </AlertDialogAction>
+          ) : (
+            <AlertDialogAction onClick={handleLogin} disabled={loginLoading}>
+              {loginLoading ? "Logging In..." : "Login"}
+            </AlertDialogAction>
+          )}
+          
         </AlertDialogFooter>
         <p className="flex justify-center mt-4">
           {mode === "signup" ? (

@@ -3,7 +3,7 @@ export const schema = `#graphql
   type User {
     _id : ID!
     name : String!
-    mail : String!
+    email : String!
   }
 
   type AuthResponse {
@@ -15,7 +15,7 @@ export const schema = `#graphql
     Users : [User]
   }
   type Mutation {
-    createUser (mail : String!, password: String!  , name : String!): AuthResponse,
-    loginUser(mail: String!, password: String!): AuthResponse
+    createUser (email : String!, password: String!  , name : String!): AuthResponse,
+    loginUser(email: String!, password: String!): AuthResponse
   }
 `

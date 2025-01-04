@@ -1,7 +1,7 @@
 import { loginSchema } from "@/Zod/schema.zod"
 
 type LoginDetails = {
-  mail: string
+  email: string
   password: string
 }
 interface ValidateLoginProps {

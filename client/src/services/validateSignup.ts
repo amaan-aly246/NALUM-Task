@@ -2,7 +2,7 @@ import { signupSchema } from "@/Zod/schema.zod"
 
 type SignupDetails = {
   name: string
-  mail: string
+  email: string
   password: string
 }
 interface ValidSignupProps {
@@ -17,6 +17,7 @@ export const validateSignup = ({
 }: ValidSignupProps) => {
   const result = signupSchema.safeParse(signupDetails)
   if (!result.success) {
+    console.log(result.error.errors)
     setErrorMsg(result.error.errors[0].message)
     setOpen(true)
     return false
