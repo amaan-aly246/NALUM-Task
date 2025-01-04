@@ -8,6 +8,7 @@ export interface IUser extends Document {
   //   profileIconUrl?: string
   //   isVerified: boolean
   mail: string
+  refreshToken: string
   //   personalMail?: string
   //   branchInfo: {
   //     degree: string
@@ -33,6 +34,7 @@ export interface IUser extends Document {
 const userSchema = new Schema<IUser>({
   name: { type: String, default: () => uuid() },
   password: { type: String, required: true },
+  refreshToken: { type: String, default: "" },
   // age: { type: Number, required: true },
   //   profileIconUrl: { type: String },
   //   isVerified: { type: Boolean, default: false },

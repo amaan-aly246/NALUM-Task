@@ -6,16 +6,16 @@ export const schema = `#graphql
     mail : String!
   }
 
-  type LoginResponse {
+  type AuthResponse {
     success: Boolean!,
     token: String,
-    message: String,
+    message: String!,
   }
   type Query{
     Users : [User]
   }
   type Mutation {
-    createUser (mail : String!, password: String!  , name : String!): String,
-    loginUser(mail: String!, password: String!): LoginResponse
+    createUser (mail : String!, password: String!  , name : String!): AuthResponse,
+    loginUser(mail: String!, password: String!): AuthResponse
   }
 `
