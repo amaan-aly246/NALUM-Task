@@ -150,7 +150,7 @@ export const createPost = async (
 
 export const getAllPosts = async (): Promise<GetAllPostsResponse> => {
   try {
-    const data = await PostModel.find({})
+    const data = await PostModel.find({}).sort({ createdAt: -1 });
     const postsData: PostType[] = data.map((post: IPost) => ({
       creator: post.creator, 
       title: post.title,
