@@ -27,7 +27,7 @@ function Navigation() {
         <div className="rounded-full bg-yellow-200 h-11 ml-6 border-primary_red ">
           photo
         </div>
-        <Input className="lg:w-2/6" placeholder="search" />
+        <Input className="lg:w-2/6 " placeholder="search" />
         <button>🔍</button>
         {/* Logout btn  */}
         {user ? (
