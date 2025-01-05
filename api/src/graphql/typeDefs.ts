@@ -16,9 +16,13 @@ export const schema = `#graphql
     title: String!,
     content: String!,
     likes: Int,
-    createdAt: Int
+    createdAt: String
   }
-
+  type GetAllPostsResponse {
+    postsData : [Post]!,
+    success: Boolean!,
+    message: String!
+  }
   type CreatePostResponse {
     success: Boolean!
     message: String!
@@ -26,8 +30,8 @@ export const schema = `#graphql
   type Query{
     Users : [User]
     User (email: String!): User
-    #for testing purposes 
-    Test: String 
+    Posts: GetAllPostsResponse
+    Test: String  #for testing purposes 
   }
 
   type Mutation {

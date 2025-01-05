@@ -16,8 +16,12 @@ export type PostType = {
   createdAt?: string
   likes?: number
 }
-
+export type GetAllPostsResponse = {
+  postsData: PostType[]
+  success: boolean
+  message: string
+}
 export type CreatePostResponse = {
-  success : boolean,
+  success: boolean
   message: string
 }

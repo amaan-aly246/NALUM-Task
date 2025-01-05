@@ -9,7 +9,8 @@ import {
   loginUser,
   testQuery,
   getUser,
-  createPost
+  createPost,
+  getAllPosts,
 } from "./graphql/resolvers.ts"
 import { authMiddleware } from "./middleware/auth.ts"
 dotenv.config()
@@ -22,6 +23,7 @@ const resolvers = {
     User: async (_: any, args: { email: string }) => {
       return getUser(args.email)
     },
+    Posts: getAllPosts,
     Test: async (parent: any, args: any, context: any) => {
       return authMiddleware(testQuery, parent, args, context)
     },
@@ -29,7 +31,7 @@ const resolvers = {
   Mutation: {
     createUser,
     loginUser,
-    createPost
+    createPost,
   },
 }
 

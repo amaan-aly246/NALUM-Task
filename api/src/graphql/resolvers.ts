@@ -1,10 +1,15 @@
 import UserModel, { IUser } from "../models/user.model"
 import PostModel, { IPost } from "../models/post.model"
-import { AuthResponse, CreatePostResponse, PostType } from "../types/types"
+import {
+  User,
+  AuthResponse,
+  CreatePostResponse,
+  PostType,
+  GetAllPostsResponse,
+} from "../types/types"
 import { compare, hash } from "bcrypt"
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
-import { User } from "../types/types"
 dotenv.config()
 const SALT_ROUND: number = 10
 export const testQuery = async (
@@ -116,7 +121,7 @@ export const getUser = async (email: string): Promise<User | null> => {
 
 export const createPost = async (
   _: any,
-  { creator, title, content}: PostType
+  { creator, title, content }: PostType
 ): Promise<CreatePostResponse> => {
   const postData = {
     title,
@@ -139,6 +144,32 @@ export const createPost = async (
     return {
       success: false,
       message: error.message || "Error in creating post ",
+    }
+  }
+}
+
+export const getAllPosts = async (): Promise<GetAllPostsResponse> => {
+  try {
+    const data = await PostModel.find({})
+    const postsData: PostType[] = data.map((post: IPost) => ({
+      creator: post.creator, // Adjust field names as per your schema
+      title: post.title,
+      content: post.content,
+      createdAt: post.createdAt?.toString(),
+      likes: post.likes,
+    }))
+    // console.log('post data', postsData)
+    return {
+      postsData,
+      success: true,
+      message: "All posts fetched successfully!",
+    }
+  } catch (error : any) {
+    console.error("Error fetching posts:", error.message)
+    return {
+      postsData: [],
+      success: false,
+      message: "Failed to fetch posts",
     }
   }
 }
