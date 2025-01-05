@@ -1,4 +1,4 @@
-import { Home, BadgePlus, User } from "lucide-react"
+import { Home, BadgePlus, User as UserIcon } from "lucide-react"
 import { Link } from "react-router"
 import AuthModal from "../components/AuthModel"
 // import { TEST_QUERY } from "@/graphql/Query/user.query"
@@ -16,10 +16,11 @@ function Footer() {
 
   return (
     <>
-      <div className="bg-fuchsia-200  fixed bottom-0 left-0 right-0 flex justify-around p-3 cursor-pointer">
+    {/* color="#7981ec" */}
+      <div className="bg-tertiary_color  fixed bottom-0 left-0 right-0 flex justify-around p-3 cursor-pointer text-primary_red">
         <span>
           <Link to="/">
-            <Home color="#7981ec" />
+            <Home  />
           </Link>
         </span>
         <span
@@ -27,12 +28,12 @@ function Footer() {
             console.log("create")
             user ? navigate("/create") : setOpen(true)
           }}>
-          <BadgePlus color="#7981ec" />
+          <BadgePlus />
         </span>
 
         {user ? (
           <Link to="/profile">
-            <User color="#7981ec" />
+            <UserIcon  />
           </Link>
         ) : (
           <span>

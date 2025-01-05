@@ -1,9 +1,15 @@
 import { User } from "../types/types"
+import { NavigateFunction } from "react-router"
 export const logout = async (
-  setUser: React.Dispatch<React.SetStateAction<User | null>> | null
+  {
+    setUser,
+    navigate,
+  }: { setUser: React.Dispatch<React.SetStateAction<User | null>> | null
+    navigate : NavigateFunction
+   }
 ): Promise<void> => {
-    if(setUser){
-        console.log("Logout function called")
-        setUser(null);
-    }
+  if (setUser) {
+    setUser(null)
+    navigate ("/")
+  }
 }

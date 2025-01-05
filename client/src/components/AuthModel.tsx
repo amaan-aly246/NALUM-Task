@@ -56,7 +56,7 @@ function AuthModal({
           setErrorMsg(null)
           setOpen(true)
         }}>
-        <UserIcon color="#7981ec" />
+        <UserIcon />
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
@@ -126,6 +126,7 @@ function AuthModal({
           </AlertDialogCancel>
           {mode == "signup" ? (
             <AlertDialogAction
+              className="bg-primary_red hover:bg-secondary_red"
               onClick={() =>
                 handleSignup({
                   signupDetails,
@@ -139,6 +140,7 @@ function AuthModal({
             </AlertDialogAction>
           ) : (
             <AlertDialogAction
+              className="bg-primary_red hover:bg-secondary_red"
               onClick={() =>
                 handleLogin({
                   loginDetails,
@@ -159,8 +161,10 @@ function AuthModal({
             <>
               Already have an account?{" "}
               <span
-                className="font-semibold underline cursor-pointer"
-                onClick={() => setMode("login")}>
+                className="font-semibold underline cursor-pointer text-secondary_red  "
+                onClick={() => setMode("login")}
+                
+                >
                 Login
               </span>
             </>
@@ -168,7 +172,7 @@ function AuthModal({
             <>
               Don’t have an account?
               <span
-                className="font-semibold underline cursor-pointer"
+                className="font-semibold underline cursor-pointer text-secondary_red"
                 onClick={() => setMode("signup")}>
                 Sign Up
               </span>
