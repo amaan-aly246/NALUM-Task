@@ -1,5 +1,5 @@
 import { Input } from "@/components/ui/input"
-import { LogOut as LogOutIcon } from "lucide-react"
+import { LogOut as LogOutIcon, Search } from "lucide-react"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -23,12 +23,17 @@ function Navigation() {
   const navigate = useNavigate()
   return (
     <>
-      <div className="  flex gap-4 py-2 justify-around items-center  bg-tertiary_color text-primary_red">
+      <div className="  flex gap-4 py-2  justify-around lg:justify-between lg:px-3 items-center  bg-tertiary_color text-primary_red">
         <div className="rounded-full bg-yellow-200 h-11 ml-6 border-primary_red ">
           photo
         </div>
-        <Input className="lg:w-2/6 " placeholder="search" />
-        <button>🔍</button>
+        <div  className="lg:w-2/6 flex gap-2" >
+          <Input placeholder="search" />
+          <button>
+            <Search />
+          </button>
+        </div>
+
         {/* Logout btn  */}
         {user ? (
           <>
@@ -54,7 +59,8 @@ function Navigation() {
             </AlertDialog>
           </>
         ) : (
-          <></>
+          <>
+          </>
         )}
       </div>
       <Outlet />

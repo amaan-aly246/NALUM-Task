@@ -1,5 +1,5 @@
 import "./index.css"
-import Create from "./screens/Create"
+import Create from "./screens/CreatePost"
 import Footer from "./screens/Footer"
 import Home from "./screens/Home"
 import InvalidPage from "./screens/InvalidPage"
