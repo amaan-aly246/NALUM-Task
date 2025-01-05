@@ -1,6 +1,5 @@
-import { useState } from "react"
-import { User } from "lucide-react"
-import { useMutation } from "@apollo/client"
+import { useState, useContext } from "react"
+import { useLazyQuery, useMutation } from "@apollo/client"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,10 +15,17 @@ import { Input } from "@/components/ui/input"
 import { CREATE_USER, LOGIN_USER } from "@/graphql/Mutation/user.mutation"
 import { handleLogin } from "@/services/handleLogin"
 import { handleSignup } from "@/services/handleSignup"
+import UserContext from "@/context/UserContext"
+import {User as UserIcon} from "lucide-react"
+import { IUserContext } from "@/context/UserContext"
+import { GET_USER } from "@/graphql/Query/user.query"
+// import {User } from "../types/types"
 function AuthModal() {
   const [open, setOpen] = useState<boolean>(false)
   const [mode, setMode] = useState<"signup" | "login">("signup")
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
+  const context = useContext<IUserContext | null>(UserContext)
+  const setUser = context ? context.setUser : null
 
   const [signupDetails, setSignupDetails] = useState({
     name: "",
@@ -31,7 +37,7 @@ function AuthModal() {
     email: "",
     password: "",
   })
-
+  const [getUser, {}] = useLazyQuery(GET_USER)
   const [createUserFunc, { loading: CreateUserLoading }] =
     useMutation(CREATE_USER)
 
@@ -44,7 +50,7 @@ function AuthModal() {
           setErrorMsg(null)
           setOpen(true)
         }}>
-        <User color="#7981ec" />
+        <UserIcon color="#7981ec" />
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
@@ -133,6 +139,8 @@ function AuthModal() {
                   setErrorMsg,
                   setOpen,
                   loginUserFunc,
+                  setUser,
+                  getUser
                 })
               }
               disabled={loginLoading}>

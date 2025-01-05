@@ -15,3 +15,11 @@ export const TEST_QUERY = gql`
     Test
   }
 `
+export const GET_USER = gql`
+  query getUser($email: String!) {
+    User(email: $email) {
+      email
+      name
+    }
+  }
+`

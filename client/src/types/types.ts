@@ -2,6 +2,7 @@ export type AuthResponse = {
   success: string
   message: string
   token?: string
+  email?: string;
 }
 
 export type LoginDetails = {
