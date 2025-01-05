@@ -152,7 +152,7 @@ export const getAllPosts = async (): Promise<GetAllPostsResponse> => {
   try {
     const data = await PostModel.find({})
     const postsData: PostType[] = data.map((post: IPost) => ({
-      creator: post.creator, // Adjust field names as per your schema
+      creator: post.creator, 
       title: post.title,
       content: post.content,
       createdAt: post.createdAt?.toString(),
