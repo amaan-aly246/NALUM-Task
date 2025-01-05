@@ -21,3 +21,11 @@ export type User = {
   email: string
   profileImgUrl? : string
 }
+
+export type PostType = {
+  creator: string
+  title: string
+  content: string
+  createdAt?: string
+  likes?: number
+}
