@@ -1,4 +1,3 @@
-import { v4 as uuid } from "uuid"
 import mongoose, { Document, Schema } from "mongoose"
 
 export interface IUser extends Document {

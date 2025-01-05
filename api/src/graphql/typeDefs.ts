@@ -1,7 +1,6 @@
 export const schema = `#graphql
   
   type User {
-    _id : ID!
     name : String!
     email : String!
   }
@@ -13,6 +12,7 @@ export const schema = `#graphql
   }
   type Query{
     Users : [User]
+    User (email: String!): User
     #for testing purposes 
     Test: String 
   }

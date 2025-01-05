@@ -4,3 +4,8 @@ export type AuthResponse = {
     message: string;
   };
   
+
+export type User = {
+  name : string,
+  email: string,
+}

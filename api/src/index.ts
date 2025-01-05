@@ -8,6 +8,7 @@ import {
   createUser,
   loginUser,
   testQuery,
+  getUser,
 } from "./graphql/resolvers.ts"
 import { authMiddleware } from "./middleware/auth.ts"
 dotenv.config()
@@ -17,6 +18,9 @@ const connectionURL = String(process.env.DATABASE_URL)
 const resolvers = {
   Query: {
     Users: getAllUsers,
+    User: async (_: any, args: { email: string }) => {
+      return getUser(args.email)
+    },
     Test: async (parent: any, args: any, context: any) => {
       return authMiddleware(testQuery, parent, args, context)
     },

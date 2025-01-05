@@ -3,9 +3,10 @@ import { AuthResponse } from "../types/types"
 import { compare, hash } from "bcrypt"
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
+import { User } from "../types/types"
 dotenv.config()
 const SALT_ROUND: number = 10
-export const getAllUsers = async (): Promise<IUser[]> => {
+export const getAllUsers = async (): Promise<User[]> => {
   const result = await UserModel.find({})
   return result
 }
@@ -85,6 +86,24 @@ export const loginUser = async (
   }
 }
 
+export const getUser = async (email: string): Promise<User | null> => {
+  try {
+    const response = await UserModel.findOne({ email })
+
+    if (!response) {
+      console.log(`No user found with email: ${email}`)
+      return null
+    }
+    const data = {
+      name: response.name,
+      email: response.email,
+    }
+    return data
+  } catch (error: any) {
+    console.error("Error fetching user:", error.message || error)
+    throw new Error("Unable to fetch user. Please try again.")
+  }
+}
 export const testQuery = async (
   parent: any,
   args: any,
