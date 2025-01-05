@@ -1,11 +1,20 @@
 import UserModel, { IUser } from "../models/user.model"
-import { AuthResponse } from "../types/types"
+import PostModel, { IPost } from "../models/post.model"
+import { AuthResponse, CreatePostResponse, PostType } from "../types/types"
 import { compare, hash } from "bcrypt"
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
 import { User } from "../types/types"
 dotenv.config()
 const SALT_ROUND: number = 10
+export const testQuery = async (
+  parent: any,
+  args: any,
+  context: any
+): Promise<string> => {
+  console.log("value in context:", context)
+  return "This is a test query"
+}
 export const getAllUsers = async (): Promise<User[]> => {
   const result = await UserModel.find({})
   return result
@@ -104,11 +113,37 @@ export const getUser = async (email: string): Promise<User | null> => {
     throw new Error("Unable to fetch user. Please try again.")
   }
 }
-export const testQuery = async (
-  parent: any,
-  args: any,
-  context: any
-): Promise<string> => {
-  console.log("value in context:", context)
-  return "This is a test query"
+
+export const createPost = async (
+  _: any,
+  { creator, title, content, createdAt, likes }: PostType
+): Promise<CreatePostResponse> => {
+  const postData = {
+    createdAt,
+    title,
+    content,
+    likes,
+    creator,
+  }
+  try {
+    const response = await PostModel.create(postData)
+    if (!response) {
+      return {
+        postData: null,
+        success: false,
+        message: "Unable to create post",
+      }
+    }
+    return {
+      postData,
+      success: true,
+      message: "post created ",
+    }
+  } catch (error: any) {
+    return {
+      postData: null,
+      success: false,
+      message: error.message || "Error in creating post ",
+    }
+  }
 }

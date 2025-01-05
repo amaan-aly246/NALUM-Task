@@ -9,6 +9,7 @@ import {
   loginUser,
   testQuery,
   getUser,
+  createPost
 } from "./graphql/resolvers.ts"
 import { authMiddleware } from "./middleware/auth.ts"
 dotenv.config()
@@ -28,6 +29,7 @@ const resolvers = {
   Mutation: {
     createUser,
     loginUser,
+    createPost
   },
 }
 

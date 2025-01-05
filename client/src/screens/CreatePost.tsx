@@ -23,7 +23,7 @@ function CreatePosts() {
         Create Post
       </h2>
       <Input
-        className="w-3/5 my-2"
+        className="w-3/5 my-2 lg:w-3/12"
         type="text"
         placeholder="Title"
         name="title"
@@ -36,12 +36,12 @@ function CreatePosts() {
         theme="snow"
         value={content}
         onChange={(content: string) => setContent(content)}
-        className="  h-48 "
+        className="  h-48 lg:w-2/3 "
       />
 
       <Button
         type="submit"
-        className="bg-primary_red hover:bg-secondary_red mt-20 w-3/4">
+        className="bg-primary_red hover:bg-secondary_red mt-20 w-3/4 lg:w-3/12">
         Create Post
       </Button>
     </form>

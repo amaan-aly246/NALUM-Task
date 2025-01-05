@@ -1,30 +1,34 @@
 import { Document, model, Schema } from "mongoose"
 
 export interface IPost extends Document {
-  creatorId: string
-  heading: string
+  creator: string
+  title: string
+  content : string,
   likes: number
   createdAt: Date
 }
 
-const PostSchema = new Schema<IPost>({
-  creatorId: {
-    type: String,
-    required: true,
+const PostSchema = new Schema<IPost>(
+  {
+    creator: {
+      type: String,
+      required: true,
+    },
+    title: {
+      type: String,
+      required: true,
+    },
+    content :{
+      type: String,
+      required: true
+    },
+    likes: {
+      type: Number,
+      default: 0,
+    },
   },
-  heading: {
-    type: String,
-    required: true,
-  },
-  likes: {
-    type: Number,
-    default: 0,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-})
+  { timestamps: true }
+)
 
-const PostModel = model<IPost>("PostModel", PostSchema)
+const PostModel = model<IPost>("Post", PostSchema)
 export default PostModel
