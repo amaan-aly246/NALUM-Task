@@ -20,7 +20,6 @@ export const schema = `#graphql
   }
 
   type CreatePostResponse {
-    postData : Post,
     success: Boolean!
     message: String!
   }
@@ -34,6 +33,6 @@ export const schema = `#graphql
   type Mutation {
     createUser (email : String!, password: String!  , name : String!): AuthResponse,
     loginUser(email: String!, password: String!): AuthResponse,
-    createPost(creator: String!, title: String!, content: String! , likes: Int, createdAt:Int) : CreatePostResponse 
+    createPost(creator: String!, title: String!, content: String!) : CreatePostResponse 
   }
 `

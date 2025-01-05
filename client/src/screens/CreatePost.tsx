@@ -1,22 +1,45 @@
 import React, { useState } from "react"
-import { Navigate } from "react-router"
+import { useNavigate } from "react-router"
 import ReactQuill from "react-quill"
 import "react-quill/dist/quill.snow.css"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-
+import { useMutation } from "@apollo/client"
+import { CREATE_POST } from "@/graphql/Mutation/post.mutation"
+import { useContext } from "react"
+import UserContext from "@/context/UserContext"
+import { IUserContext } from "@/context/UserContext"
 function CreatePosts() {
   const [title, setTitle] = useState("")
   const [content, setContent] = useState("")
-  const [redirect, setRedirect] = useState(false)
-
-  const handleSubmit = (event: React.FormEvent) => {
+  const navigate = useNavigate();
+  const [createPost, { loading: createPostLoading, error: createPostError }] =
+    useMutation(CREATE_POST)
+  const context = useContext<IUserContext | null>(UserContext)
+  const user = context ? context.user : null
+  const handleSubmit = async (event: React.FormEvent): Promise<void> => {
     event.preventDefault()
-    console.log("Post created:", { title, content })
-    setRedirect(true)
+    try {
+      if (user) {
+        const response = (
+          await createPost({
+            variables: {
+              title,
+              content,
+              creator: user.name,
+            },
+          })
+        ).data.createPost
+        if(response.success){
+            alert(response.message)
+            navigate('/');
+        }
+      }
+    } catch (error) {
+      console.log(createPostError)
+    }
   }
 
-  if (redirect) return <Navigate to="/" />
   return (
     <form className="flex items-center flex-col " onSubmit={handleSubmit}>
       <h2 className=" font-semibold text-primary_red text-4xl mt-4">
@@ -42,7 +65,7 @@ function CreatePosts() {
       <Button
         type="submit"
         className="bg-primary_red hover:bg-secondary_red mt-20 w-3/4 lg:w-3/12">
-        Create Post
+        {createPostLoading ? "Creating..." : "Create Post"}
       </Button>
     </form>
   )

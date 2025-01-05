@@ -13,12 +13,11 @@ export type PostType = {
   creator: string
   title: string
   content: string
-  createdAt: string
+  createdAt?: string
   likes?: number
 }
 
 export type CreatePostResponse = {
-  postData : PostType | null,
   success : boolean,
   message: string
 }

@@ -116,32 +116,27 @@ export const getUser = async (email: string): Promise<User | null> => {
 
 export const createPost = async (
   _: any,
-  { creator, title, content, createdAt, likes }: PostType
+  { creator, title, content}: PostType
 ): Promise<CreatePostResponse> => {
   const postData = {
-    createdAt,
     title,
     content,
-    likes,
     creator,
   }
   try {
     const response = await PostModel.create(postData)
     if (!response) {
       return {
-        postData: null,
         success: false,
         message: "Unable to create post",
       }
     }
     return {
-      postData,
       success: true,
       message: "post created ",
     }
   } catch (error: any) {
     return {
-      postData: null,
       success: false,
       message: error.message || "Error in creating post ",
     }
