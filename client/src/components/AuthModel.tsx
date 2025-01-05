@@ -16,12 +16,18 @@ import { CREATE_USER, LOGIN_USER } from "@/graphql/Mutation/user.mutation"
 import { handleLogin } from "@/services/handleLogin"
 import { handleSignup } from "@/services/handleSignup"
 import UserContext from "@/context/UserContext"
-import {User as UserIcon} from "lucide-react"
+import { User as UserIcon } from "lucide-react"
 import { IUserContext } from "@/context/UserContext"
 import { GET_USER } from "@/graphql/Query/user.query"
 // import {User } from "../types/types"
-function AuthModal() {
-  const [open, setOpen] = useState<boolean>(false)
+function AuthModal({
+  open,
+  setOpen,
+}: {
+  open: boolean
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>
+}) {
+  // const [open, setOpen] = useState<boolean>(false)
   const [mode, setMode] = useState<"signup" | "login">("signup")
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
   const context = useContext<IUserContext | null>(UserContext)
@@ -140,7 +146,7 @@ function AuthModal() {
                   setOpen,
                   loginUserFunc,
                   setUser,
-                  getUser
+                  getUser,
                 })
               }
               disabled={loginLoading}>

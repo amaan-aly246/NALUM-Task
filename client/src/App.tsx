@@ -5,6 +5,7 @@ import Home from "./screens/Home"
 import InvalidPage from "./screens/InvalidPage"
 import Navigation from "./screens/Navigation"
 import { Route, Routes } from "react-router"
+import Profile from "./screens/Profile"
 function App() {
   return (
     <>
@@ -12,6 +13,7 @@ function App() {
         <Route  element={<Navigation />}>
           <Route path="/" element={<Home />} />
           <Route path="create" element={<Create />} />
+          <Route path="profile" element={<Profile />} />
         </Route>
         <Route path="*" element={<InvalidPage />} />
       </Routes>
