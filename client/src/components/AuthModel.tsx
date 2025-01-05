@@ -73,10 +73,17 @@ function AuthModal() {
           },
         })
       ).data.loginUser
-      console.log(response)
+      // console.log(response)
       if (!response.success) {
         setErrorMsg(response.message)
         return
+      }
+      if (response.token) {
+        console.log("whats up token")
+        localStorage.setItem("token", response.token)
+        const tokenAfterStored = localStorage.getItem("token");
+        console.log(tokenAfterStored)
+
       }
       setOpen(false)
     } catch (error: any) {
@@ -171,7 +178,6 @@ function AuthModal() {
               {loginLoading ? "Logging In..." : "Login"}
             </AlertDialogAction>
           )}
-          
         </AlertDialogFooter>
         <p className="flex justify-center mt-4">
           {mode === "signup" ? (

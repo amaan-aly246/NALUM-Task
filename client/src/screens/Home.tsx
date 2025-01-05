@@ -16,9 +16,9 @@ function Home() {
       <h1>This is the home page</h1>
       <ul>
         {data.Users.map(
-          (user: { mail: string; name: string ,}, index: number) => (
+          (user: { email: string; name: string }, index: number) => (
             <div key={index}>
-              <li>{user.mail}</li>
+              <li>{user.email}</li>
               <li>{user.name}</li>
             </div>
           )

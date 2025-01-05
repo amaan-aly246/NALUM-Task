@@ -52,7 +52,6 @@ export const loginUser = async (
     // compare password for user which exist in the db
     const isPasswordValid = await compare(password, user.password)
     if (!isPasswordValid) {
-      // incorrect password by the user
       return {
         success: false,
         message: "Incorrect password",
@@ -63,20 +62,20 @@ export const loginUser = async (
     const accessToken = jwt.sign(
       { email: user.email },
       process.env.ACCESS_TOKEN_SECRET!,
-      { expiresIn: "30s" }
+      { expiresIn: "1hr" }
     )
     const refreshToken = jwt.sign(
       { email: user.email },
       process.env.REFRESH_TOKEN_SECRET!,
       { expiresIn: "30s" }
     )
-    
+
     // update the refresh token
-    await UserModel.findOneAndUpdate({email}, {refreshToken})
+    await UserModel.findOneAndUpdate({ email }, { refreshToken })
     return {
-      success : true,
-      message : "logged in successfully",
-      token : accessToken
+      success: true,
+      message: "logged in successfully",
+      token: accessToken,
     }
   } catch (error: any) {
     return {
@@ -84,4 +83,13 @@ export const loginUser = async (
       message: error.message || "Error while login.",
     }
   }
+}
+
+export const testQuery = async (
+  parent: any,
+  args: any,
+  context: any
+): Promise<string> => {
+  console.log("value in context:", context)
+  return "This is a test query"
 }
