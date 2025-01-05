@@ -9,7 +9,8 @@ import {
   createHttpLink,
 } from "@apollo/client"
 import { setContext } from "@apollo/client/link/context"
-
+import { UserProvider } from "./context/UserContext.tsx"
+UserProvider
 const httpLink = createHttpLink({
   uri: import.meta.env.VITE_GRAPHQL_SERVER, // GraphQL server URL
 })
@@ -34,7 +35,9 @@ const client = new ApolloClient({
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>
     <ApolloProvider client={client}>
-      <App />
+      <UserProvider>
+        <App />
+      </UserProvider>
     </ApolloProvider>
   </BrowserRouter>
 )

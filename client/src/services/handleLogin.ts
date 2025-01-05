@@ -30,8 +30,7 @@ export const handleLogin = async ({
     }
     if (response.token) {
       localStorage.setItem("token", response.token)
-      const token = localStorage.getItem("token");
-      console.log(token);
+      // console.log(localStorage.getItem("token"));
     }
     setOpen(false)
   } catch (error: any) {
