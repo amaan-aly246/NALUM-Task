@@ -1,8 +1,6 @@
-import { ReactEventHandler, useState } from "react"
+import { useState } from "react"
 import { User } from "lucide-react"
 import { useMutation } from "@apollo/client"
-import { validateLogin } from "@/services/validateLogin"
-import { validateSignup } from "@/services/validateSignup"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,7 +14,8 @@ import {
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { CREATE_USER, LOGIN_USER } from "@/graphql/Mutation/user.mutation"
-import { AuthResponse } from "@/types/types"
+import { handleLogin } from "@/services/handleLogin"
+import { handleSignup } from "@/services/handleSignup"
 function AuthModal() {
   const [open, setOpen] = useState<boolean>(false)
   const [mode, setMode] = useState<"signup" | "login">("signup")
@@ -36,61 +35,7 @@ function AuthModal() {
   const [createUserFunc, { loading: CreateUserLoading }] =
     useMutation(CREATE_USER)
 
-  const handleSignup: ReactEventHandler = async (): Promise<void> => {
-    if (!validateSignup({ signupDetails, setErrorMsg, setOpen })) return
-    try {
-      setErrorMsg(null)
-      const response: AuthResponse = (
-        await createUserFunc({
-          variables: {
-            name: signupDetails.name,
-            email: signupDetails.email,
-            password: signupDetails.password,
-          },
-        })
-      ).data.createUser
-      if (!response.success) {
-        setErrorMsg(response.message)
-        return
-      }
-      setOpen(false)
-    } catch (error: any) {
-      console.error(error)
-      setErrorMsg(error.message || "An unexpected error occurred")
-    }
-  }
-
   const [loginUserFunc, { loading: loginLoading }] = useMutation(LOGIN_USER)
-  const handleLogin: ReactEventHandler = async (): Promise<void> => {
-    if (!validateLogin({ loginDetails, setErrorMsg, setOpen })) return
-    try {
-      setErrorMsg(null)
-      const response: AuthResponse = (
-        await loginUserFunc({
-          variables: {
-            email: loginDetails.email,
-            password: loginDetails.password,
-          },
-        })
-      ).data.loginUser
-      // console.log(response)
-      if (!response.success) {
-        setErrorMsg(response.message)
-        return
-      }
-      if (response.token) {
-        console.log("whats up token")
-        localStorage.setItem("token", response.token)
-        const tokenAfterStored = localStorage.getItem("token");
-        console.log(tokenAfterStored)
-
-      }
-      setOpen(false)
-    } catch (error: any) {
-      console.error(error)
-      setErrorMsg(error.message || "An unexpected error occurred")
-    }
-  }
 
   return (
     <AlertDialog open={open}>
@@ -169,12 +114,28 @@ function AuthModal() {
           </AlertDialogCancel>
           {mode == "signup" ? (
             <AlertDialogAction
-              onClick={handleSignup}
+              onClick={() =>
+                handleSignup({
+                  signupDetails,
+                  setErrorMsg,
+                  setOpen,
+                  createUserFunc,
+                })
+              }
               disabled={CreateUserLoading}>
               {CreateUserLoading ? "Signing Up..." : "Sign Up"}
             </AlertDialogAction>
           ) : (
-            <AlertDialogAction onClick={handleLogin} disabled={loginLoading}>
+            <AlertDialogAction
+              onClick={() =>
+                handleLogin({
+                  loginDetails,
+                  setErrorMsg,
+                  setOpen,
+                  loginUserFunc,
+                })
+              }
+              disabled={loginLoading}>
               {loginLoading ? "Logging In..." : "Login"}
             </AlertDialogAction>
           )}

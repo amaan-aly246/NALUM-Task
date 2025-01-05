@@ -1,10 +1,5 @@
 import { signupSchema } from "@/Zod/schema.zod"
-
-type SignupDetails = {
-  name: string
-  email: string
-  password: string
-}
+import { SignupDetails } from "@/types/types"
 interface ValidSignupProps {
   signupDetails: SignupDetails
   setErrorMsg: (msg: string | null) => void

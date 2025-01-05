@@ -1,9 +1,6 @@
 import { loginSchema } from "@/Zod/schema.zod"
+import { LoginDetails } from "@/types/types"
 
-type LoginDetails = {
-  email: string
-  password: string
-}
 interface ValidateLoginProps {
   loginDetails: LoginDetails
   setErrorMsg: (msg: string | null) => void
