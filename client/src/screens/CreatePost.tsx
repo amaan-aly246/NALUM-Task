@@ -4,37 +4,45 @@ import ReactQuill from "react-quill"
 import "react-quill/dist/quill.snow.css"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { useMutation } from "@apollo/client"
+import { GET_USER } from "@/graphql/Query/user.query"
+import { useLazyQuery, useMutation } from "@apollo/client"
 import { CREATE_POST } from "@/graphql/Mutation/post.mutation"
-import { useContext } from "react"
-import UserContext from "@/context/UserContext"
-import { IUserContext } from "@/context/UserContext"
+import { decodeToken } from "react-jwt"
 function CreatePosts() {
   const [title, setTitle] = useState("")
   const [content, setContent] = useState("")
-  const navigate = useNavigate();
-  const [createPost, { loading: createPostLoading }] =
-    useMutation(CREATE_POST)
-  const context = useContext<IUserContext | null>(UserContext)
-  const user = context ? context.user : null
+  const navigate = useNavigate()
+  const [createPost, { loading: createPostLoading }] = useMutation(CREATE_POST)
+  const [getUser, {}] = useLazyQuery(GET_USER)
   const handleSubmit = async (event: React.FormEvent): Promise<void> => {
     event.preventDefault()
     try {
-      console.log('user', user)
-      if (user) {
+      const token = localStorage.getItem("token")
+
+      if (token) {
+        const decoded = decodeToken<{
+          email: string
+          iat: number
+          exp: number
+        } | null>(token)
+        const { name } = (
+          await getUser({
+            variables: { email: decoded?.email },
+          })
+        ).data.User
         const response = (
           await createPost({
             variables: {
               title,
               content,
-              creator: user.name,
+              creator: name,
             },
           })
         ).data.createPost
-        console.log(response)
-        if(response.success){
-            alert(response.message)
-            navigate('/');
+        // console.log(response)
+        if (response.success) {
+          alert(response.message)
+          navigate("/")
         }
       }
     } catch (error: any) {
