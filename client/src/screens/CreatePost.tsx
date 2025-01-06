@@ -13,13 +13,14 @@ function CreatePosts() {
   const [title, setTitle] = useState("")
   const [content, setContent] = useState("")
   const navigate = useNavigate();
-  const [createPost, { loading: createPostLoading, error: createPostError }] =
+  const [createPost, { loading: createPostLoading }] =
     useMutation(CREATE_POST)
   const context = useContext<IUserContext | null>(UserContext)
   const user = context ? context.user : null
   const handleSubmit = async (event: React.FormEvent): Promise<void> => {
     event.preventDefault()
     try {
+      console.log('user', user)
       if (user) {
         const response = (
           await createPost({
@@ -30,13 +31,14 @@ function CreatePosts() {
             },
           })
         ).data.createPost
+        console.log(response)
         if(response.success){
             alert(response.message)
             navigate('/');
         }
       }
-    } catch (error) {
-      console.log(createPostError)
+    } catch (error: any) {
+      console.log(error.message)
     }
   }
 

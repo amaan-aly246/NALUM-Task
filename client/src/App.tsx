@@ -1,5 +1,5 @@
 import "./index.css"
-import Create from "./screens/CreatePost"
+import CreatePost from "./screens/CreatePost"
 import Footer from "./screens/Footer"
 import Home from "./screens/Home"
 import InvalidPage from "./screens/InvalidPage"
@@ -12,7 +12,7 @@ function App() {
       <Routes>
         <Route  element={<Navigation />}>
           <Route path="/" element={<Home />} />
-          <Route path="create" element={<Create />} />
+          <Route path="create" element={<CreatePost />} />
           <Route path="profile" element={<Profile />} />
         </Route>
         <Route path="*" element={<InvalidPage />} />
